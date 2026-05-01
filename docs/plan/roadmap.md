@@ -11,4 +11,5 @@
 ## v0.1.0 (Current)
 
 - Initialize the project and configurations.
+- Initialize the Gemini CLI configurations.
 - Initialize the CORS mechanism.
