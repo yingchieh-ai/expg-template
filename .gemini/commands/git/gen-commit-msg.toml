@@ -1,0 +1,9 @@
+# Invoked via: /git:gen-commit-msg
+
+description = "Generates a concise and descriptive Git commit message based on staged or unstaged changes."
+prompt = """
+Analyze the current Git changes (prioritizing staged changes) and generate a professional commit message. 
+The subject line should be in the imperative mood, concise (under 50 characters), and summarize the primary change. 
+If the change is complex, include a brief body explaining the 'why' behind the modification. 
+Maintain a clean, readable format consistent with Git best practices.
+"""
