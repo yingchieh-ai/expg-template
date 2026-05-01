@@ -2,11 +2,10 @@
   "name": "expg-template",
   "version": "0.1.0",
   "description": "Express and PostgreSQL backend service template.",
-  "main": "app.js",
   "scripts": {
-    "dev": "tsx watch src/app.ts",
+    "dev": "tsx watch src/server.ts",
     "build": "tsc",
-    "start": "node dist/app.js",
+    "start": "NODE_ENV=production node dist/server.js",
     "test": "tsx --test",
     "lint": "pnpm eslint .",
     "type-check": "tsc --noEmit",
