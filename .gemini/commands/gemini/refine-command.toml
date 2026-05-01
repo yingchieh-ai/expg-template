@@ -1,4 +1,4 @@
-# Invoke via: /gemini:refine-command
+# Invoke via: /gemini:refine-command @filename
 
 description = "Refines the description and prompt of a specified Gemini command TOML file to improve its clarity and effectiveness."
 prompt = "Please review and refine the Gemini command defined in the `{{args}}` file. Focus on making the `description` concise and the `prompt` more detailed and instructional, ensuring it provides clear guidance for the AI agent when the command is invoked."
