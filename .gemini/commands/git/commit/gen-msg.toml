@@ -1,4 +1,4 @@
-# Invoked via: /git:gen-commit-msg
+# Invoked via: /git:commit:gen-msg
 
 description = "Generate a Git commit message from staged or unstaged changes."
 prompt = """
