@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "description": "Express and PostgreSQL backend service template.",
   "scripts": {
-    "dev": "tsx watch src/server.ts",
+    "dev": "tsx watch --include \"./src/**/*\" src/server.ts",
+    "debug": "tsx watch --include \"./src/**/*\" --inspect-brk src/server.ts",
     "build": "tsc",
     "start": "NODE_ENV=production node dist/server.js",
     "test": "tsx --test",
@@ -32,6 +33,7 @@
   "packageManager": "pnpm@10.33.0",
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
     "@types/node": "^25.6.0",
     "eslint": "^10.2.1",
@@ -45,6 +47,7 @@
     "typescript-eslint": "^8.59.1"
   },
   "dependencies": {
+    "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.2.1"
   },

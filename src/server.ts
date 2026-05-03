@@ -1,7 +1,4 @@
-import donet from 'dotenv';
-
-donet.config();
-
+import 'dotenv/config';
 import app from './app';
 
 const PORT = process.env.PORT || 5000;
