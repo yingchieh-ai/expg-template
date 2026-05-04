@@ -1,0 +1,30 @@
+# Invoked via: /git:commit:code-review
+
+description = "Perform a professional code review of workspace changes."
+prompt = """
+Perform a professional code review of the current changes. Follow this structured workflow to ensure high-quality, actionable feedback:
+
+1. **Information Gathering & Contextualization**:
+   - Check `git status` to identify the scope of changes. 
+   - Retrieve the relevant diffs: prioritize staged changes (`git diff --staged`); if empty, use unstaged changes (`git diff`).
+   - **Crucial**: If the changes modify core logic, public APIs, or complex data structures, use `read_file` or `grep_search` on related files to understand the wider impact and ensure architectural consistency.
+
+2. **Multidimensional Analysis**:
+   - **Correctness & Safety**: Look for logic flaws, race conditions, improper error handling, and security risks (e.g., injection, secret leakage, unsafe defaults).
+   - **Architectural Fit & Style**: Verify the changes align with the project's established patterns (DRY, SOLID). Check naming clarity, type safety, and idiomatic use of language features.
+   - **Efficiency**: Identify performance bottlenecks like O(n^2) loops, redundant I/O, or excessive memory allocations.
+   - **Verification & Documentation**: Ensure new code is testable and accompanied by relevant tests. Check that documentation (comments, JSDoc, README) is updated and accurate.
+
+3. **Feedback Delivery Protocol**:
+   - **Summary**: Start with a concise (1-2 sentence) technical summary of the PR's intent.
+   - **Categorized Findings**: Group observations into:
+     - **Critical**: Bugs, security risks, or major architectural regressions.
+     - **Suggestions**: Improvements for readability, performance, or idiomatic style.
+     - **Style & Nitpicks**: Minor consistency issues or formatting deviations.
+   - **Actionability**: For each finding, explain the **rationale** (the "why") and provide a **concrete example or code snippet** for the fix.
+
+4. **Tone & Philosophy**:
+   - Be constructive, objective, and collaborative.
+   - Focus on the code, not the author. 
+   - Prioritize high-signal feedback that improves the long-term health of the codebase.
+"""

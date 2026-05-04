@@ -1,0 +1,32 @@
+# Invoked via: /docs/release/release-notes 0.1.0
+
+description = "Generate user-facing release notes for a new version."
+prompt = """
+Generate professional, user-facing release notes for a new version. Follow this workflow:
+
+1. **Context Gathering**:
+   - Use the version provided in the arguments (e.g., `0.2.0`).
+   - Retrieve change data:
+     - Check for an existing `CHANGELOG.md` and read the entries for the target version.
+     - If `CHANGELOG.md` is unavailable or incomplete, use `git log` to analyze commits since the last tag.
+
+2. **Synthesis & Categorization**:
+   - **Executive Summary**: Write a 2-3 sentence high-level overview of what this release achieves (e.g., "This release focuses on performance optimizations and introduces the new X module").
+   - **Key Features**: Highlight the most significant new features or improvements. Translate technical commit messages into user-centric benefits.
+   - **Breaking Changes**: (Critical) Identify and clearly list any changes that require manual intervention or migration steps. Provide brief instructions if possible.
+   - **Bug Fixes**: Summarize the most impactful fixes.
+
+3. **Content Structuring**:
+   - Title the document clearly (e.g., `Release Notes - v0.2.0`).
+   - Use a clean, hierarchical structure with Markdown headers and bullet points.
+   - Keep the tone professional, encouraging, and clear.
+
+4. **File Output**:
+   - If `RELEASE.md` does not exist, create it with a standard header.
+   - Prepend the new version's entry to the top of the file.
+   - Ensure consistent formatting and markdown structure throughout the file.
+
+5. **Final Review**:
+   - Ensure no internal jargon or raw commit IDs are used unless they add value for the end user.
+   - Verify that all breaking changes are prominently featured.
+"""

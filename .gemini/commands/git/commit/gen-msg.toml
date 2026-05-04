@@ -1,0 +1,22 @@
+# Invoked via: /git:commit:gen-msg
+
+description = "Generate a Git commit message from staged or unstaged changes."
+prompt = """
+Generate a professional Git commit message by analyzing the workspace changes. Follow these specific instructions:
+
+1. **Information Gathering**:
+   - Start by checking the current status and reviewing the actual diffs. Prioritize staged changes (`git diff --staged`), but fall back to unstaged changes (`git diff`) if none are staged.
+   - Don't add unstaged changes to staged changes.
+   - Review the recent commit history (`git log -n 5`) to match the project's specific style, prefixes (e.g., Conventional Commits like 'feat:', 'fix:'), and tone.
+
+2. **Content Standards**:
+   - **Subject Line**: Summarize the change in 50 characters or less. Use the imperative mood (e.g., "Fix", not "Fixed"). Do not end with a period.
+   - **Body**: For complex or architectural changes, provide a detailed body. Focus on the "why" and "how" of the change rather than just "what" changed. Separate the subject from the body with a blank line. Wrap body text at 72 characters.
+   - **Bullet Points**: Use hyphens for lists within the body to improve readability of multiple related changes.
+
+3. **Style Consistency**:
+   - Adhere strictly to any identified local conventions (e.g., Jira ticket IDs in the header, specific category prefixes).
+
+4. **Final Output**:
+   - Present the draft commit message clearly. If multiple valid interpretations of the change exist, propose the most likely one but remain concise.
+"""

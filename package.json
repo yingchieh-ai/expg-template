@@ -1,0 +1,61 @@
+{
+  "name": "expg-template",
+  "version": "0.1.0",
+  "description": "Express and PostgreSQL backend service template.",
+  "scripts": {
+    "dev": "tsx watch --include \"./src/**/*\" src/server.ts",
+    "build": "tsc",
+    "start": "NODE_ENV=production node dist/server.js",
+    "test": "tsx --test",
+    "lint": "pnpm eslint .",
+    "type-check": "tsc --noEmit",
+    "prepare": "husky"
+  },
+  "keywords": [
+    "Node.js",
+    "Express",
+    "Template"
+  ],
+  "author": {
+    "name": "YingChieh.ai",
+    "email": "yingchieh.ai@gmail.com",
+    "url": "https://github.com/yingchieh-ai"
+  },
+  "contributors": [
+    {
+      "name": "Samuel Wang",
+      "email": "chieh0919@gmail.com",
+      "url": "https://github.com/SamuelWang"
+    }
+  ],
+  "license": "MIT",
+  "packageManager": "pnpm@10.33.0",
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/cookie-parser": "^1.4.10",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/node": "^25.6.0",
+    "eslint": "^10.2.1",
+    "eslint-config-prettier": "^10.1.8",
+    "globals": "^17.5.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.4.0",
+    "prettier": "3.8.3",
+    "tsx": "^4.21.0",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.59.1"
+  },
+  "dependencies": {
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1"
+  },
+  "lint-staged": {
+    "**/*": "prettier --write --ignore-unknown"
+  },
+  "engines": {
+    "node": ">=24"
+  }
+}
