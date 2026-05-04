@@ -1,5 +1,8 @@
 {
   "ui": {
     "showLineNumbers": false
+  },
+  "general": {
+    "defaultApprovalMode": "auto_edit"
   }
 }
