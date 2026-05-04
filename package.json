@@ -4,7 +4,6 @@
   "description": "Express and PostgreSQL backend service template.",
   "scripts": {
     "dev": "tsx watch --include \"./src/**/*\" src/server.ts",
-    "debug": "tsx watch --include \"./src/**/*\" --inspect-brk src/server.ts",
     "build": "tsc",
     "start": "NODE_ENV=production node dist/server.js",
     "test": "tsx --test",
