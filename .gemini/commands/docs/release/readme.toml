@@ -1,0 +1,28 @@
+# Invoked via: /docs/release/readme
+
+description = "Sync README.md with the latest release details."
+prompt = """
+Update the `README.md` file to reflect the state of the project for a new release. Follow this workflow:
+
+1. **Context Gathering**:
+   - Read `package.json` to verify the current version, dependencies, and available scripts.
+   - Read `CHANGELOG.md` to identify key features, breaking changes, or deprecations introduced in this release.
+
+2. **Metadata Synchronization**:
+   - Update any version numbers, version badges, or "Latest Release" strings in `README.md` to match the new version.
+   - Update "Last Updated" or date-related fields to the current date (YYYY-MM-DD).
+
+3. **Content Alignment**:
+   - **Stack & Technologies**: Ensure the technologies list accurately reflects the current `package.json` dependencies and devDependencies.
+   - **Usage & Installation**: Update setup instructions if new environment variables, scripts, or prerequisites have been introduced.
+   - **Feature Highlights**: If this release adds significant capabilities, ensure they are represented in the README's overview or feature list.
+   - **Maintenance**: Remove any documentation for features that were removed or deprecated in this release.
+
+4. **Formatting & Quality**:
+   - Maintain the existing markdown structure, heading levels, and visual style.
+   - Ensure all internal and external links remain functional.
+   - Verify that the tone is professional, concise, and consistent with the rest of the project.
+
+5. **Verification**:
+   - Double-check that the updated README correctly references the new version and is consistent with both `package.json` and `CHANGELOG.md`.
+"""
