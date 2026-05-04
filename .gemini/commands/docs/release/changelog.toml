@@ -1,0 +1,34 @@
+# Invoked via: /docs/release/changelog 0.1.0
+
+description = "Update CHANGELOG.md for a new release version."
+prompt = """
+Update the `CHANGELOG.md` file for a new release. Follow this workflow:
+
+1. **Version Identification**:
+   - Use the version provided in the arguments (e.g., `0.2.0`). 
+   - Identify the previous version (the latest tag or the version currently in `package.json`).
+
+2. **Change Analysis**:
+   - Gather commit history between the previous version and `HEAD` using `git log`.
+   - Analyze and categorize the changes into the following sections:
+     - **Added**: For new features.
+     - **Changed**: For changes in existing functionality.
+     - **Deprecated**: For soon-to-be removed features.
+     - **Removed**: For now removed features.
+     - **Fixed**: For any bug fixes.
+     - **Security**: In case of vulnerabilities.
+
+3. **Content Generation**:
+   - Format the entry using the [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) standard.
+   - Include the version number and the current date (YYYY-MM-DD).
+   - Provide clear, high-level descriptions for each change, referencing PRs or issues if available in the commit messages.
+
+4. **File Update**:
+   - If `CHANGELOG.md` does not exist, create it with a standard header.
+   - Prepend the new version's entry to the top of the file, maintaining the `[Unreleased]` section if it exists.
+   - Ensure consistent formatting and markdown structure throughout the file.
+
+5. **Verification**:
+   - Review the generated content for accuracy and professional tone.
+   - Confirm that the `package.json` version matches the new release version if appropriate.
+"""
