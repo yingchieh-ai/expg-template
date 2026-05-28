@@ -2,16 +2,18 @@
   "name": "expg-template",
   "version": "0.1.0",
   "description": "Express and PostgreSQL backend service template.",
+  "type": "module",
   "scripts": {
     "dev": "tsx watch --include \"./src/**/*\" src/server.ts",
+    "dev:db:generate": "pnpm drizzle-kit generate",
+    "dev:db:migrate": "pnpm drizzle-kit migrate",
     "build": "tsc",
     "start": "NODE_ENV=production node dist/server.js",
+    "db:migrate": "node dist/db/migrate.js",
     "test": "tsx --test",
     "lint": "pnpm eslint .",
     "type-check": "tsc --noEmit",
-    "prepare": "husky",
-    "db:migration:generate": "pnpm drizzle-kit generate",
-    "db:migration:migrate": "pnpm drizzle-kit migrate"
+    "prepare": "husky"
   },
   "keywords": [
     "Node.js",
