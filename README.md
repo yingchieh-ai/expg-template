@@ -2,7 +2,7 @@
 
 Express and PostgreSQL backend service template.
 
-[![Version](https://img.shields.io/badge/version-0.1.0-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-0.2.0-blue.svg)](CHANGELOG.md)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 ## Overview
@@ -59,6 +59,33 @@ pnpm dev:db:migrate
 ```
 
 Migrations are baked into the Docker image at build time, so the production release package is self-contained — no source tree is needed on the server.
+
+## Authentication
+
+This template ships with Google OAuth 2.0 authentication and JWT-based sessions.
+
+### Environment Variables
+
+| Variable               | Description                                                               |
+| ---------------------- | ------------------------------------------------------------------------- |
+| `GOOGLE_CLIENT_ID`     | Google OAuth client ID                                                    |
+| `GOOGLE_CLIENT_SECRET` | Google OAuth client secret                                                |
+| `GOOGLE_REDIRECT_URI`  | OAuth callback URL (e.g. `http://localhost:5000/auth/google/callback`)    |
+| `JWT_SECRET`           | Secret used to sign JWTs                                                  |
+| `JWT_EXPIRES_IN`       | Token lifetime — `7d`, `24h`, `30m`, `5s`, or bare seconds (default `7d`) |
+| `CLIENT_REDIRECT_URL`  | Frontend URL to redirect to after successful login                        |
+
+### Endpoints
+
+| Method | Path                    | Description                                    |
+| ------ | ----------------------- | ---------------------------------------------- |
+| GET    | `/auth/google`          | Initiates Google OAuth flow                    |
+| GET    | `/auth/google/callback` | Handles OAuth callback and issues a JWT cookie |
+
+### CSRF Protection
+
+All state-changing requests (`POST`, `PUT`, `PATCH`, `DELETE`) require a CSRF token.
+The token is issued as the `__csrf` cookie; clients must echo it back in the `x-csrf-token` header.
 
 ## Deployment
 
