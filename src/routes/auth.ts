@@ -1,6 +1,7 @@
 import { Router, type IRouter, type CookieOptions, type Request, type Response } from 'express';
 import { getGoogleAuthUrl, handleGoogleCallback } from '@/services/auth.service';
 import { signToken } from '@/lib/jwt';
+import { CSRF_COOKIE, csrfCookieOptions, generateCsrfToken } from '@/middlewares/csrf';
 
 interface OAuthProvider {
   getAuthUrl: (state: string) => string;
@@ -47,12 +48,12 @@ function stateCookieOptions(): CookieOptions {
   };
 }
 
-function sessionCookieOptions(): CookieOptions {
+function sessionCookieOptions(maxAge: number): CookieOptions {
   return {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
-    sameSite: 'strict',
-    maxAge: parseDuration(process.env.JWT_EXPIRES_IN ?? '7d'),
+    sameSite: 'lax',
+    maxAge,
     path: '/',
   };
 }
@@ -103,7 +104,12 @@ router.get('/:provider/callback', async (req: Request, res: Response) => {
     const user = await provider.handleCallback(code!);
     const token = signToken({ sub: user.id, email: user.email });
 
-    res.cookie(SESSION_COOKIE, token, sessionCookieOptions()).redirect(redirectBase);
+    const maxAge = parseDuration(process.env.JWT_EXPIRES_IN ?? '7d');
+    const csrfToken = generateCsrfToken();
+    res
+      .cookie(SESSION_COOKIE, token, sessionCookieOptions(maxAge))
+      .cookie(CSRF_COOKIE, csrfToken, csrfCookieOptions(maxAge))
+      .redirect(redirectBase);
   } catch (err) {
     console.error(`[auth/${providerKey}/callback]`, err);
     res.redirect(`${process.env.CLIENT_REDIRECT_URL ?? '/'}?error=auth_failed`);
