@@ -17,7 +17,7 @@ const providers = {
 
 type SupportedProvider = keyof typeof providers;
 
-function parseDuration(value: string): number {
+export function parseDuration(value: string): number {
   const match = /^(\d+)(d|h|m|s)?$/.exec(value);
   if (!match) return 7 * 24 * 60 * 60 * 1000;
   const n = parseInt(match[1]!, 10);
