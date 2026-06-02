@@ -8,14 +8,7 @@ interface OAuthProvider {
   handleCallback: (code: string) => Promise<{ id: string; email: string }>;
 }
 
-const providers = {
-  google: {
-    getAuthUrl: getGoogleAuthUrl,
-    handleCallback: handleGoogleCallback,
-  },
-} satisfies Record<string, OAuthProvider>;
-
-type SupportedProvider = keyof typeof providers;
+type ProviderMap = Record<string, OAuthProvider>;
 
 export function parseDuration(value: string): number {
   const match = /^(\d+)(d|h|m|s)?$/.exec(value);
@@ -58,62 +51,77 @@ function sessionCookieOptions(maxAge: number): CookieOptions {
   };
 }
 
-const router: IRouter = Router();
+export function createAuthRouter(providers: ProviderMap): IRouter {
+  const router: IRouter = Router();
 
-router.get('/:provider', (req: Request, res: Response) => {
-  const providerKey = req.params['provider'] as SupportedProvider;
-  const provider = providers[providerKey];
+  router.get('/:provider', (req: Request, res: Response) => {
+    const provider = providers[req.params['provider'] as string];
 
-  if (!provider) {
-    res.status(404).json({ error: 'Unknown provider' });
-    return;
-  }
-
-  const state = crypto.randomUUID();
-  const url = provider.getAuthUrl(state);
-
-  res.cookie(STATE_COOKIE, state, stateCookieOptions()).redirect(url);
-});
-
-router.get('/:provider/callback', async (req: Request, res: Response) => {
-  const redirectBase = process.env.CLIENT_REDIRECT_URL ?? '/';
-  const providerKey = req.params['provider'] as SupportedProvider;
-  const provider = providers[providerKey];
-
-  if (!provider) {
-    res.status(404).json({ error: 'Unknown provider' });
-    return;
-  }
-
-  try {
-    const { code, state, error } = req.query as Record<string, string>;
-
-    if (error) {
-      res.redirect(`${redirectBase}?error=auth_failed`);
+    if (!provider) {
+      res.status(404).json({ error: 'Unknown provider' });
       return;
     }
 
-    const savedState = req.cookies[STATE_COOKIE] as string | undefined;
-    if (!state || !savedState || state !== savedState) {
-      res.status(400).json({ error: 'Invalid state parameter' });
+    const state = crypto.randomUUID();
+    const url = provider.getAuthUrl(state);
+
+    res.cookie(STATE_COOKIE, state, stateCookieOptions()).redirect(url);
+  });
+
+  router.get('/:provider/callback', async (req: Request, res: Response) => {
+    const redirectBase = process.env.CLIENT_REDIRECT_URL ?? '/';
+    const provider = providers[req.params['provider'] as string];
+
+    if (!provider) {
+      res.status(404).json({ error: 'Unknown provider' });
       return;
     }
 
-    res.clearCookie(STATE_COOKIE, { path: '/auth' });
+    try {
+      const code = typeof req.query.code === 'string' ? req.query.code : undefined;
+      const state = typeof req.query.state === 'string' ? req.query.state : undefined;
+      const error = typeof req.query.error === 'string' ? req.query.error : undefined;
 
-    const user = await provider.handleCallback(code!);
-    const token = signToken({ sub: user.id, email: user.email });
+      if (error) {
+        res.redirect(`${redirectBase}?error=auth_failed`);
+        return;
+      }
 
-    const maxAge = parseDuration(process.env.JWT_EXPIRES_IN ?? '7d');
-    const csrfToken = generateCsrfToken();
-    res
-      .cookie(SESSION_COOKIE, token, sessionCookieOptions(maxAge))
-      .cookie(CSRF_COOKIE, csrfToken, csrfCookieOptions(maxAge))
-      .redirect(redirectBase);
-  } catch (err) {
-    console.error(`[auth/${providerKey}/callback]`, err);
-    res.redirect(`${process.env.CLIENT_REDIRECT_URL ?? '/'}?error=auth_failed`);
-  }
+      const savedState = req.cookies[STATE_COOKIE] as string | undefined;
+      if (!state || !savedState || state !== savedState) {
+        res.status(400).json({ error: 'Invalid state parameter' });
+        return;
+      }
+
+      if (!code) {
+        res.status(400).json({ error: 'Missing authorization code' });
+        return;
+      }
+
+      res.clearCookie(STATE_COOKIE, { path: '/auth' });
+
+      const user = await provider.handleCallback(code);
+      const token = signToken({ sub: user.id, email: user.email });
+
+      const maxAge = parseDuration(process.env.JWT_EXPIRES_IN ?? '7d');
+      const csrfToken = generateCsrfToken();
+      res
+        .cookie(SESSION_COOKIE, token, sessionCookieOptions(maxAge))
+        .cookie(CSRF_COOKIE, csrfToken, csrfCookieOptions(maxAge))
+        .redirect(redirectBase);
+    } catch (err) {
+      const providerKey = req.params['provider'];
+      console.error(`[auth/${providerKey}/callback]`, err);
+      res.redirect(`${process.env.CLIENT_REDIRECT_URL ?? '/'}?error=auth_failed`);
+    }
+  });
+
+  return router;
+}
+
+export default createAuthRouter({
+  google: {
+    getAuthUrl: getGoogleAuthUrl,
+    handleCallback: handleGoogleCallback,
+  },
 });
-
-export default router;

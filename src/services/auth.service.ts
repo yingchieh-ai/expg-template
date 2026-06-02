@@ -27,7 +27,6 @@ export async function handleGoogleCallback(code: string): Promise<{ id: string; 
   const oauthClient = getOAuthClient();
 
   const { tokens } = await oauthClient.getToken(code);
-  oauthClient.setCredentials(tokens);
 
   const ticket = await oauthClient.verifyIdToken({
     idToken: tokens.id_token!,

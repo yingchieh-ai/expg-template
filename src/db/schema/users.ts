@@ -13,5 +13,8 @@ export const usersTable = pgTable('users', {
   provider_data: jsonb().default(sql`'{}'::jsonb`),
   last_login_at: timestamp({ withTimezone: true }),
   created_at: timestamp({ withTimezone: true }).notNull().defaultNow(),
-  updated_at: timestamp({ withTimezone: true }).notNull().defaultNow(),
+  updated_at: timestamp({ withTimezone: true })
+    .notNull()
+    .defaultNow()
+    .$onUpdateFn(() => new Date()),
 });
