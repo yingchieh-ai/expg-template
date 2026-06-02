@@ -1,7 +1,9 @@
 node_modules
 dist
-
+data
 .env*
 !.env.example
-
-data/postgres/
+.git
+.husky
+docs
+*.md

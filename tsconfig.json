@@ -1,4 +1,5 @@
 {
+  "include": ["src"],
   "exclude": ["dist", "eslint.config.mts"],
   // Visit https://aka.ms/tsconfig to read more about this file
   "compilerOptions": {
@@ -10,7 +11,7 @@
     // See also https://aka.ms/tsconfig/module
     "module": "preserve",
     "target": "esnext",
-    "types": [],
+    "types": ["node"],
     "strict": true,
     "moduleDetection": "force",
     "resolveJsonModule": true,

@@ -1,0 +1,21 @@
+services:
+  db:
+    container_name: ${APP_NAME}-db
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_DB: ${DATABASE_DB}
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
+    ports:
+      - '127.0.0.1:5432:5432'
+    healthcheck:
+      # Use the container's own POSTGRES_USER / POSTGRES_DB env vars for reliability
+      # $$ escapes the variable so Docker Compose passes it to the container shell
+      test: ['CMD-SHELL', 'pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    restart: unless-stopped

@@ -1,11 +1,15 @@
 {
   "name": "expg-template",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Express and PostgreSQL backend service template.",
+  "type": "module",
   "scripts": {
     "dev": "tsx watch --include \"./src/**/*\" src/server.ts",
+    "dev:db:generate": "pnpm drizzle-kit generate",
+    "dev:db:migrate": "pnpm drizzle-kit migrate",
     "build": "tsc",
     "start": "NODE_ENV=production node dist/server.js",
+    "db:migrate": "node dist/db/migrate.js",
     "test": "tsx --test",
     "lint": "pnpm eslint .",
     "type-check": "tsc --noEmit",
@@ -35,13 +39,18 @@
     "@types/cookie-parser": "^1.4.10",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
+    "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^25.6.0",
+    "@types/pg": "^8.20.0",
+    "@types/supertest": "^7.2.0",
+    "drizzle-kit": "^0.31.10",
     "eslint": "^10.2.1",
     "eslint-config-prettier": "^10.1.8",
     "globals": "^17.5.0",
     "husky": "^9.1.7",
     "lint-staged": "^16.4.0",
     "prettier": "3.8.3",
+    "supertest": "^7.2.2",
     "tsx": "^4.21.0",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.59.1"
@@ -50,7 +59,11 @@
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
-    "express": "^5.2.1"
+    "drizzle-orm": "^0.45.2",
+    "express": "^5.2.1",
+    "google-auth-library": "^10.6.2",
+    "jsonwebtoken": "^9.0.3",
+    "pg": "^8.20.0"
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"

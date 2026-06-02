@@ -4,6 +4,27 @@ This file contains user-facing release notes for all versions of this project.
 
 ---
 
+## Release Notes - v0.2.0 (2026-06-01)
+
+### Executive Summary
+
+v0.2.0 transforms the base scaffold into a production-ready backend. This release adds end-to-end Google OAuth 2.0 authentication with JWT sessions, CSRF protection, a fully integrated PostgreSQL database layer with schema migrations, and Docker-based containerization with one-command deploy and rollback scripts.
+
+### Key Features
+
+- **Authentication**: Full Google OAuth 2.0 flow issuing signed JWT session cookies. Token lifetime is configurable via `JWT_EXPIRES_IN` (e.g. `7d`, `24h`, `30m`) with a `parseDuration()` utility handling flexible formats.
+- **Security**: CSRF double-submit cookie pattern protects all state-changing requests. Validation uses timing-safe comparison; safe HTTP methods are exempted automatically.
+- **Database**: Drizzle ORM `users` table with UUID primary key, email, OAuth provider fields, login tracking, and soft-delete support. Migrations are generated with `drizzle-kit` and committed to the repository.
+- **Containerization & Deployment**: Multi-stage `Dockerfile` (Node.js 24-alpine, pnpm). Docker Compose wires a `migrate` service that runs before the `app` service starts, ensuring the database is always up to date. `docker-compose.db.yml` provides an optional local PostgreSQL 17 service. `scripts/build.sh`, `scripts/deploy.sh`, and `scripts/rollback.sh` cover the full image lifecycle.
+- **Graceful Shutdown**: Handles `SIGTERM` and `SIGINT` by draining the HTTP server and closing the database pool before exit — enabling zero-downtime rolling deployments.
+- **Testing**: Unit test suite using the Node.js native test runner covers JWT issuance/verification, CSRF middleware behavior, and duration parsing edge cases.
+
+### Getting Started
+
+To get started with this template, refer to the [README.md](README.md) for installation, authentication setup, and deployment instructions.
+
+---
+
 ## Release Notes - v0.1.0 (2026-05-04)
 
 ### Executive Summary
